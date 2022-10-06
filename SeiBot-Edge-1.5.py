@@ -2,7 +2,6 @@ from ast import Continue
 from sqlite3 import dbapi2
 from tkinter import filedialog
 import tkinter
-from turtle import width
 #from numpy import pad
 import pyautogui
 from tkinter import *
@@ -14,7 +13,10 @@ from random import expovariate
 import pandas as pd
 from pandas import options
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.edge.service import Service as EdgeService # Usar no Edge
+from webdriver_manager.microsoft import EdgeChromiumDriverManager # Usar no Edge
+from selenium.webdriver.edge.options import Options # Usar no Edge
+#from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -32,8 +34,8 @@ from time import sleep
 import urllib
 from myimages import *
 import datetime as dt
+import logging
 import threading
-
 
 datahoje = str(dt.date.today())
 
@@ -43,7 +45,6 @@ if datahoje < ('2023-04-02'):
 O WhatsApp não gosta de automação, portanto, use com sabedoria. O robô simula a interação humana, por isso demora
 um pouco. Me isento de quaisquer problemas que possa ter pelo mal uso da ferramenta!""", title='AVISO')
 
-  # aviso = pyautogui.alert(text='Se você usa o Google Chrome como navegador padrão, feche antes de executar o programa', title='ATENÇÃO')
 
   nome_computador = os.getlogin()
 
@@ -54,6 +55,7 @@ um pouco. Me isento de quaisquer problemas que possa ter pelo mal uso da ferrame
   app.configure(background="#0e0e24")
   iconimg = PhotoImage(file='logoapp.png')
   app.iconphoto(False, iconimg)
+  os.environ['WDM_LOG'] = str(logging.NOTSET)
 
 
   #app.tk.call('wm', 'iconphoto', app._w, tkinter.PhotoImage(file=r'C:\Users\winst\OneDrive - Church of Jesus Christ\CODE\PYTHON\SeiBot_1.0 - Atual\img\logoapp.png'))
@@ -97,16 +99,16 @@ um pouco. Me isento de quaisquer problemas que possa ter pelo mal uso da ferrame
 
   def Carregar_Arq():
     abrir = askopenfilename()
-    global dx
+    global db
     dt = abrir
-    dx = pd.read_excel(dt)
+    db = pd.read_excel(dt)
     arqcarregado = Label(app,text="Arquivo Carregado",background='#0e0e24',foreground='#45E28D')
     arqcarregado.grid(row=2, column=2)
     app.grid_rowconfigure(2, weight=1)
     return dt
 
 
-  # Essa função, permite com que meu programa não trava enquanto envia as mensagens
+    # Essa função, permite com que meu programa não trava enquanto envia as mensagens
   def tt():
     t1=threading.Thread(target=Enviar_Msg)
     t1.start()
@@ -115,14 +117,16 @@ um pouco. Me isento de quaisquer problemas que possa ter pelo mal uso da ferrame
     barra_progresso = ttk.Progressbar(app, orient=HORIZONTAL, length=250, mode='determinate')
     barra_progresso.grid(row=6, column=2)
     app.grid_rowconfigure(6, weight=1)
-    
-    df = dx
-    mensagem = msg.get("1.0","end-1c")
-      # Abrir navegador em Cache
-    chrome_options = Options()
-    chrome_options.add_argument(f"user-data-dir=C:/Users/{nome_computador}/AppData/Local/Google/Chrome/User Data")
 
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+    df = db
+    mensagem = msg.get("1.0","end-1c")
+      # Abrir navegador em cache
+    edge_options = Options()
+    #edge_options.binary_location = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+    edge_options.add_argument(f"user-data-dir=C:\\Users\\{nome_computador}\\AppData\\Local\\Microsoft\\Edge\\User Data")
+
+
+    driver = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()), options=edge_options)
     wait = WebDriverWait(driver,100)
     site = ('https://web.whatsapp.com')
     driver.get(site)
@@ -134,9 +138,11 @@ um pouco. Me isento de quaisquer problemas que possa ter pelo mal uso da ferrame
     # Esperar o WhatsApp Web carregar
     wait.until(ec.text_to_be_present_in_element((By.XPATH, '//*[@id="app"]/div/div/div[4]/div/div/div[2]/div[1]/h1'),'WhatsApp Web'))
 
-    rodar = pyautogui.alert(text='Clique em Ok para começar a enviar as mensagens', title='Começar Programa', button=('OK'))
+    rodar = pyautogui.confirm(text='Clique em Ok para começar a enviar as mensagens', title='Começar Programa')
 
-    if rodar == 'OK': 
+    if rodar == 'OK':
+
+      #Acessar a base de dados e colocar no código pra ser enviado
       # Conta quantas linhas tem no DataFrame
       contar_linhas = df[df.columns[0]].count()
       #Acessar a base de dados e colocar no código pra ser enviado)
@@ -176,7 +182,7 @@ um pouco. Me isento de quaisquer problemas que possa ter pelo mal uso da ferrame
       if count > 0:
         invalidos = pyautogui.confirm(text='Deseja ver os números inválidos?', title='Números Inválidos')
         if invalidos =='OK':
-          file = filedialog.asksaveasfile(defaultextension='.xlsx', filetypes=[('Arquivo TXT','.txt'),('Excel', '.xlsx'),('Todos','.*')])
+          file = filedialog.asksaveasfile(defaultextension='.txt', filetypes=[('Arquivo TXT','.txt'),('Todos','.*')])
           file.write(str(semwhats))
           file.close()
       else:
@@ -196,8 +202,8 @@ um pouco. Me isento de quaisquer problemas que possa ter pelo mal uso da ferrame
   carregar_arq = Button(app, text='Carregar Arquivo', command=Carregar_Arq)
   txbox = Label(app,text='Digite a mensagem que deseja enviar para todos',background='#0e0e24',foreground='#fff')
   msg = Text(app,width=50, height=10)
-  msg.insert(END,"Digite aqui sua mensagem.")
-  btn_enviar = Button(app, text="Enviar", command=tt)
+  msg.insert(END,"Não Precisa digitar o nome do aluno.")
+  btn_enviar = Button(app, text="Enviar", command=Enviar_Msg)
   info = Label(app,text="SeiBot. Versão 1.0 - Desenvolvido por Winston de Moura",background='#0e0e24',foreground='#fff')
 
   logo.grid(row=0, column=2,padx=15, pady=15)
@@ -221,4 +227,4 @@ um pouco. Me isento de quaisquer problemas que possa ter pelo mal uso da ferrame
   app.mainloop()
 
 else:
-  pyautogui.alert(text="Programa Expirou. Baixe-o novamente do site: <href:http://seibot.ml>", title='Programa Expirou')
+  pyautogui.alert(text="Programa Expirou. Baixe-o novamente do site", title='Programa Expirou')
