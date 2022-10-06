@@ -134,7 +134,7 @@ um pouco. Me isento de quaisquer problemas que possa ter pelo mal uso da ferrame
     # Esperar o WhatsApp Web carregar
     wait.until(ec.text_to_be_present_in_element((By.XPATH, '//*[@id="app"]/div/div/div[4]/div/div/div[2]/div[1]/h1'),'WhatsApp Web'))
 
-    rodar = pyautogui.alert(text='Clique em Ok para começar a enviar as mensagens', title='Começar Programa', button=('OK'))
+    rodar = pyautogui.confirm(text='Clique em Ok para começar a enviar as mensagens', title='Começar Programa')
 
     if rodar == 'OK': 
       # Conta quantas linhas tem no DataFrame

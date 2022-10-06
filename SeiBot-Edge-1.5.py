@@ -202,8 +202,8 @@ um pouco. Me isento de quaisquer problemas que possa ter pelo mal uso da ferrame
   carregar_arq = Button(app, text='Carregar Arquivo', command=Carregar_Arq)
   txbox = Label(app,text='Digite a mensagem que deseja enviar para todos',background='#0e0e24',foreground='#fff')
   msg = Text(app,width=50, height=10)
-  msg.insert(END,"Não Precisa digitar o nome do aluno.")
-  btn_enviar = Button(app, text="Enviar", command=Enviar_Msg)
+  msg.insert(END,"Digite aqui sua mensagem..")
+  btn_enviar = Button(app, text="Enviar", command=tt)
   info = Label(app,text="SeiBot. Versão 1.0 - Desenvolvido por Winston de Moura",background='#0e0e24',foreground='#fff')
 
   logo.grid(row=0, column=2,padx=15, pady=15)
