@@ -2,7 +2,7 @@ from ast import Continue
 from sqlite3 import dbapi2
 from tkinter import filedialog
 import tkinter
-from turtle import width
+from turtle import title, width
 #from numpy import pad
 import pyautogui
 from tkinter import *
@@ -42,6 +42,7 @@ if datahoje < ('2023-04-02'):
   alerta = pyautogui.alert(text="""Esse programa foi testado com lista de 300 contatos.
 O WhatsApp não gosta de automação, portanto, use com sabedoria. O robô simula a interação humana, por isso demora
 um pouco. Me isento de quaisquer problemas que possa ter pelo mal uso da ferramenta!""", title='AVISO')
+
 
   # aviso = pyautogui.alert(text='Se você usa o Google Chrome como navegador padrão, feche antes de executar o programa', title='ATENÇÃO')
 
@@ -198,7 +199,7 @@ um pouco. Me isento de quaisquer problemas que possa ter pelo mal uso da ferrame
   msg = Text(app,width=50, height=10)
   msg.insert(END,"Digite aqui sua mensagem.")
   btn_enviar = Button(app, text="Enviar", command=tt)
-  info = Label(app,text="SeiBot. Versão 1.0 - Desenvolvido por Winston de Moura",background='#0e0e24',foreground='#fff')
+  info = Label(app,text="SeiBot. Versão 1.5 - Desenvolvido por Winston de Moura",background='#0e0e24',foreground='#fff')
 
   logo.grid(row=0, column=2,padx=15, pady=15)
   carregar_arq.grid(row=1, column=2, pady=(0,10))
