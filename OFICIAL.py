@@ -13,10 +13,6 @@ import time
 from tkinter.filedialog import askopenfilename, askopenfilenames
 import threading
 
-
-
-# ___ #
-
 nome_computador = os.getlogin()
 # ________________________________Janelas do programa e estilos___________________________#
 
@@ -113,11 +109,9 @@ def janela_edge():
     element_justification='c',
     finalize=True
   )
-# ________________________________ FIM de Janelas do programa e estilos___________________________#
+
 
 #___________________________ FUNÇÕES DRIVE ______________________________#
-
-
 
 def tt_Chrome():
   t1=threading.Thread(target=Enviar_Msg_Chrome)
@@ -277,6 +271,8 @@ def Enviar_Msg_Edge():
 
 def arq_carregado():
   linha = [[Text('Arquivo Carregado')]]
+
+
 # Janelas Iniciais
 janela1, janela2, janela3 = janela_ini(), None, None
 # Loop para leitura dos eventos
