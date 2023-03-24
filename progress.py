@@ -17,3 +17,5 @@ window_pb = Window('Enviando Mensagens', layout, icon='SEIBOT.ico', background_c
 
 
 window_pb.close()
+
+
